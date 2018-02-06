@@ -1,20 +1,23 @@
-module quad_1d
-  !This is a theoretically complete draft, but likely has syntax errors.
+module quad_1dmod
+  !This the requested module.
   use type_defs
   implicit none
-  integer :: nvars, q
-  alloc(q,nvars)
+
   type quad_1d
-     real(kind=dp), dimension(0:q,nvars) :: a
+     integer :: nvars, q
+     real(kind=dp), allocatable, dimension(:,:) :: a
   end type quad_1d
-  dealloc
-end module quad_1d
 
-subroutine alloc(q,nvars)
-  allocate(a(0:q,nvars))
-end subroutine alloc
-
-subroutine dealloc
-  dealloc(a)
-end subroutine dealloc
+contains
   
+  subroutine allocate_quad1d(el)
+    type(quad_1d)::el
+    allocate(el%a(0:el%q,el%nvars))
+  end subroutine allocate_quad1d
+  
+  subroutine deallocate_quad1d(el)
+    type(quad_1d)::el
+    deallocate(el%a)
+  end subroutine deallocate_quad1d
+
+end module quad_1dmod
