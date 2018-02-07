@@ -32,7 +32,7 @@ contains
         leg(0) = 1
         leg(1) = x
         do n = 1, k-1
-            ! The below expression doesn't match Wiki's values
+            ! Recurive relation for Legendre polynomials of degree > 1 (Wiki)
             leg(n+1) = ((2*n+1)*x*leg(n) - n*leg(n-1))/(n+1)
         end do
 
