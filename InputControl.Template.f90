@@ -36,7 +36,7 @@ contains
 
   subroutine delete_quad(num_quads, quad_array)
     integer, intent(in) :: num_quads
-    type(quad_1d), intent(out) :: quad_array(num_quads)
+    type(quad_1d) :: quad_array(num_quads)
     integer :: i 
 
     do i=1,num_quads

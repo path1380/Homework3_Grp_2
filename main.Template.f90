@@ -26,20 +26,17 @@ program main
 
   implicit none
 
-  integer, parameter :: num_grdpts = 3, num_nodes = 6
+  integer, parameter :: num_grdpts = GGGG, num_nodes = NNNN
   integer :: degree_vec(num_grdpts - 1)
   real(dp) :: grdpts(num_grdpts), sample_nodes(num_nodes)
   real(dp) :: lt_endpt, rt_endpt, stepsize
-  type(quad_1d), dimension(:), allocatable ::interval_info, approximation
+  type(quad_1d) :: interval_info(num_grdpts - 1)
+  type(quad_1d) :: approximation(num_grdpts-1)
   integer :: i, j
 
   !Grab grid information from InputControl
   call domain(grdpts)
   call legendre_degrees(degree_vec)
-  
-  !allocate our quad_qd arrays
-  ALLOCATE(approximation(num_grdpts-1))
-  ALLOCATE(interval_info(num_grdpts-1))
 
   !Compute coefficients for each interval
   do i = 1,num_grdpts-1
@@ -47,12 +44,12 @@ program main
     rt_endpt = grdpts(i+1)
 
     !get coefficients in the current interval
-    interval_info(i)%lt_endpt = lt_endpt
-    interval_info(i)%rt_endpt = rt_endpt
-    interval_info(i)%q = degree_vec(i)
-    call allocate_quad1d(interval_info(i))
     interval_info(i) = element(lt_endpt,rt_endpt,degree_vec(i))
     
+    if(i == 1) then
+      write(*,*) interval_info(i)%a(:,1)
+    end if
+
     !build approximation
     approximation(i)%lt_endpt = lt_endpt
     approximation(i)%rt_endpt = rt_endpt
@@ -66,16 +63,14 @@ program main
 
     !evaluate at a new set of gridpoints
      approximation(i)%a(:,1) = approx_eval(lt_endpt,rt_endpt,num_nodes,sample_nodes,degree_vec(i),interval_info(i)%a(:,1))
-     write(*,*) i
-     write(*,*) "Here are the sample nodes"
-     write(*,*) sample_nodes
-     write(*,*) "Here's the approximation"
-     write(*,*) approximation(i)%a(:,1)
+     ! write(*,*) i
+     ! write(*,*) "Here are the sample nodes"
+     ! write(*,*) sample_nodes
+     ! write(*,*) "Here's the approximation"
+     ! write(*,*) approximation(i)%a(:,1)
   end do
+
   !Deallocate all used memory (CURRENTLY BROKEN)
-  call delete_quad(num_grdpts-1, interval_info)
-  DEALLOCATE(interval_info)
-  call delete_quad(num_grdpts-1, approximation)
-  DEALLOCATE(approximation)
+  !call delete_quad(num_grdpts-1, interval_info)
 
 end program main
