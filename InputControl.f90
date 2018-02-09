@@ -10,10 +10,9 @@ module InputControl
 contains
 
   function function_eval(num_pts, grd_pts)
-    integer :: i
     integer, intent(in) :: num_pts
-    real(dp), intent(in) :: grd_pts(0:num_pts)
-    real(dp) :: function_eval(0:num_pts)
+    real(dp), intent(in) :: grd_pts(0:num_pts-1)
+    real(dp) :: function_eval(0:num_pts-1)
 
     !Here replace the string sin(x) with the desired function
     !via a perl script
