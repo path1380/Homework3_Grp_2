@@ -29,27 +29,20 @@ contains
         real(dp), dimension(0:leg_degree), intent(in) :: leg_coeffs
         real(dp), dimension(0:leg_degree) :: temp_array
         real(dp), dimension(num_grdpts) :: approx_eval
-        real(dp) :: temp_sum, scaling, shift
-        integer :: n, j
-
+        real(dp) :: scaling, shift
+        integer :: n
+        
         !Calculate scaling and shift needed by affine map
         !Here we must map the given interval back to [-1,1]
         scaling = 1.0_dp/(rt_endpt - lt_endpt)
         shift = (rt_endpt + lt_endpt)
 
         do n = 1, num_grdpts
-            !reset temporary sum back to 0
-            temp_sum = 0.0_dp
-            
             !evaluate each Legendre poly at a given gridpoint
             temp_array = leg(leg_degree, scaling*(2.0_dp*grdpts(n) - shift))
 
             !build linear combination of Legendre polynomials
-            do j = 0, leg_degree
-                temp_sum = temp_sum + leg_coeffs(j)*temp_array(j)
-            end do
-
-            approx_eval(n) = temp_sum
+            approx_eval(n) = DOT_PRODUCT(leg_coeffs, temp_array)
         end do
 
     end function approx_eval

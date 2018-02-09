@@ -49,7 +49,7 @@ contains
 
     !Evaluate the given function at each quadrature node (here the nodes are mapped to the current
     !interval and passed into function_eval to save memory). The function can be modified in InputControl.f90
-    fun_vals = function_eval(leg_degree, 0.5_dp*(leg_nodes*(rt_endpt - lt_endpt) + (rt_endpt + lt_endpt))) 
+    fun_vals = function_eval(leg_degree+1, 0.5_dp*(leg_nodes*(rt_endpt - lt_endpt) + (rt_endpt + lt_endpt))) 
 
     !Loop over each node and build our integral approximation 
     do i=0,leg_degree
