@@ -13,10 +13,10 @@ $outFile2="./main.f90";
 
 # Functions to test
 
-@array_f = ("exp( ((x-2.0_dp)**2.0_dp)/2.0_dp)", "1 + x", "sin(x)");
+@array_f = ("exp( ((grd_pts-2.0_dp)**2.0_dp)/2.0_dp)", "1 + grd_pts", "sin(grd_pts)");
 @array_num_grdpts = ("3", "5", "3");
 @array_num_intervals = ("2", "4", "2");
-@array_degrees = ("(/12, 12/)", "(/12,12,12,12,12/)", "(/12, 12/)");
+@array_degrees = ("(/12, 12/)", "(/12,12,12,12/)", "(/12, 12/)");
 @array_grdpts = ("(/0.0_dp, 0.3_dp, 1.0_dp/)", "(/0.0_dp, 0.3_dp, 1.0_dp, 2.0_dp, 2.2_dp/)", "(/0.0_dp, 0.3_dp, 1.0_dp/)");
 @array_num_subsamples = ("15", "15", "15");
 
@@ -66,24 +66,26 @@ for( $m = 0; $m < 3; $m = $m+1){
     close( FILE );
     
     # # Run the shell commands to compile and run the program
-    # system("make");
+    system("make -f Makefile_main");
     # #system("./a.out > tmp.txt");
 
-    # open(FILE,"tmp.txt") || die "cannot open file" ;
+     open(FILE,"output.txt") || die "cannot open file" ;
     # # Setup the outfile based on the template
     # # read one line at a time.
-    # while( $line = <FILE> )
-    # {
+     while( $line = <FILE> )
+     {
     # # Replace the the stings by using substitution
     # # s
-    # $line =~ s/\s+/ , /g;
-    # $line =~ s/ , $/ /;
-    # $line =~ s/^ , / /;
-    # $line =  $line . "\n";
-    # print $line; 
+     $line =~ s/\s+/ , /g;
+     $line =~ s/ , $/ /;
+     $line =~ s/^ , / /;
+     $line =  $line . "\n";
+     print $line; 
     # }
-    # close( FILE );
-}
+     close( FILE );
+     system("make -f Makefile_main clean");
 
+}
+}
 exit
 

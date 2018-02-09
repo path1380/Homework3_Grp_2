@@ -17,7 +17,7 @@ program main
 
   implicit none
 
-  integer, parameter :: num_grdpts = 3, num_nodes = 6
+  integer, parameter :: num_grdpts = 3, num_nodes = 15
   integer :: degree_vec(num_grdpts - 1)
   real(dp) :: grdpts(num_grdpts), sample_nodes(num_nodes), function_vals(num_nodes)
   real(dp) :: lt_endpt, rt_endpt, stepsize
@@ -67,8 +67,8 @@ program main
      L2_err(i) = NORM2(approximation(i)%a(:,1) - function_vals)
   end do
 
-  write(*,'(ES12.4)') maxval(unif_err)
-  write(*,'(ES12.4)',advance='no') maxval(L2_err)
+  !print errors out to terminal
+  write(*,'(2(E24.16))') maxval(unif_err), maxval(L2_err)
 
   !Deallocate all used memory
   call delete_quad(num_grdpts-1, interval_info)

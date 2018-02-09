@@ -14,7 +14,7 @@ contains
     real(dp), intent(in) :: grd_pts(0:num_pts-1)
     real(dp) :: function_eval(0:num_pts-1)
 
-    !Here replace the string sin(x) with the desired function
+    !Here replace the string sin(grd_pts) with the desired function
     !via a perl script
     function_eval = sin(grd_pts)
   end function function_eval

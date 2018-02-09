@@ -6,15 +6,6 @@ program main
 ! function (defined in InputControl.f90) onto the space of Legendre
 ! polynomials in L2. We then evaluate the approximation on an 
 ! equispaced grid on each interval.
-!
-! CURRENT ISSUES: For some reason the approximation near x=0 seems to be 
-! complete garbage. If we stay away from x=0 then everything seems to work
-! just fine and we get (in this case) machine precision in each interval. 
-! Also the deallocation at the end gives an error saying that we are 
-! trying to deallocate something that was never allocated. This needs to 
-! get looked at, but I thought I heard Daniel say that the compiler 
-! just deallocates stuff anyway. We should figure this out just to be
-! safe though.
 ! =======================================================================
   use type_defs
   use quad_1dmod
@@ -28,32 +19,37 @@ program main
 
   integer, parameter :: num_grdpts = GGGG, num_nodes = NNNN
   integer :: degree_vec(num_grdpts - 1)
-  real(dp) :: grdpts(num_grdpts), sample_nodes(num_nodes)
+  real(dp) :: grdpts(num_grdpts), sample_nodes(num_nodes), function_vals(num_nodes)
   real(dp) :: lt_endpt, rt_endpt, stepsize
-  type(quad_1d) :: interval_info(num_grdpts - 1)
-  type(quad_1d) :: approximation(num_grdpts-1)
+  real(dp), dimension(num_grdpts -1) :: unif_err, L2_err
+  type(quad_1d), dimension(:), allocatable ::interval_info, approximation
   integer :: i, j
 
   !Grab grid information from InputControl
   call domain(grdpts)
   call legendre_degrees(degree_vec)
+  
+  !allocate our quad_qd arrays
+  ALLOCATE(approximation(num_grdpts-1))
+  ALLOCATE(interval_info(num_grdpts-1))
 
-  !Compute coefficients for each interval
+  !Compute coefficients and approximation on each interval
   do i = 1,num_grdpts-1
     lt_endpt = grdpts(i)
     rt_endpt = grdpts(i+1)
 
     !get coefficients in the current interval
+    interval_info(i)%lt_endpt = lt_endpt
+    interval_info(i)%rt_endpt = rt_endpt
+    interval_info(i)%q = degree_vec(i)
+    call allocate_quad1d(interval_info(i))
     interval_info(i) = element(lt_endpt,rt_endpt,degree_vec(i))
     
-    if(i == 1) then
-      write(*,*) interval_info(i)%a(:,1)
-    end if
-
     !build approximation
     approximation(i)%lt_endpt = lt_endpt
     approximation(i)%rt_endpt = rt_endpt
     approximation(i)%q = num_nodes - 1
+    approximation(i)%nvars = 1
     call allocate_quad1d(approximation(i))
 
     stepsize = (rt_endpt - lt_endpt)/dble(num_nodes + 1)
@@ -61,16 +57,23 @@ program main
       sample_nodes(j) = lt_endpt + j*stepsize
     end do
 
+    !create array of function values at each sample node (for error calculations)
+    function_vals = function_eval(num_nodes, sample_nodes)
+
+
     !evaluate at a new set of gridpoints
      approximation(i)%a(:,1) = approx_eval(lt_endpt,rt_endpt,num_nodes,sample_nodes,degree_vec(i),interval_info(i)%a(:,1))
-     ! write(*,*) i
-     ! write(*,*) "Here are the sample nodes"
-     ! write(*,*) sample_nodes
-     ! write(*,*) "Here's the approximation"
-     ! write(*,*) approximation(i)%a(:,1)
+     unif_err(i) = MAXVAL(ABS(approximation(i)%a(:,1) - function_vals))
+     L2_err(i) = NORM2(approximation(i)%a(:,1) - function_vals)
   end do
 
-  !Deallocate all used memory (CURRENTLY BROKEN)
-  !call delete_quad(num_grdpts-1, interval_info)
+  !print errors out to terminal
+  write(*,'(2(E24.16))') maxval(unif_err), maxval(L2_err)
+
+  !Deallocate all used memory
+  call delete_quad(num_grdpts-1, interval_info)
+  DEALLOCATE(interval_info)
+  call delete_quad(num_grdpts-1, approximation)
+  DEALLOCATE(approximation)
 
 end program main

@@ -9,6 +9,7 @@ EXECUTABLE = main.x
 .PHONY: clean
 $(EXECUTABLE): $(OBJECTS)
 	$(LD) -o $(EXECUTABLE) $(OBJECTS)
+	./$(EXECUTABLE) >> output.txt
 %.o : %.f90
 	$(FC) $(F90FLAGS) -c $<
 clean:
