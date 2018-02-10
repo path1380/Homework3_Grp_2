@@ -17,17 +17,9 @@ contains
         !           location x
         ! ========================================================
         real(dp), intent(in) :: x
-        integer, intent(in) :: k    ! TODO: Should we assign an int precision?
+        integer, intent(in) :: k
         integer :: n
         real(dp), dimension(0:k) :: leg
-
-        ! TODO: Create array of size k, return 1, x, 1/2*(3x^2 - 1), ...
-        ! If k = 1, make sure you only return 1
-
-        ! if (k .lt. 0) then
-        !     write(*,*) "Invalid value for k!"
-        !     ! TODO: Exit function
-        ! end if
 
         leg(0) = 1
         leg(1) = x
