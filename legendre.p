@@ -21,10 +21,10 @@ $outFile2="./main.f90";
 @array_num_subsamples = ("15", "15", "15");
 
 for( $m = 0; $m < 3; $m = $m+1){
-    # Open the Template file and the output file. 
+    # Open the Template file and the output file.
     open(FILE,"$cmdFile") || die "cannot open file $cmdFile!" ;
     open(OUTFILE,"> $outFile") || die "cannot open file!" ;
-    
+
     # Setup the outfile based on the template
     # read one line at a time.
     while( $line = <FILE> )
@@ -47,7 +47,7 @@ for( $m = 0; $m < 3; $m = $m+1){
 
     open(FILE,"$cmdFile2") || die "cannot open file $cmdFile!" ;
     open(OUTFILE,"> $outFile2") || die "cannot open file!" ;
-    
+
     # Setup the outfile based on the template
     # read one line at a time.
     while( $line = <FILE> )
@@ -64,7 +64,7 @@ for( $m = 0; $m < 3; $m = $m+1){
     # Close the files
     close( OUTFILE );
     close( FILE );
-    
+
     # # Run the shell commands to compile and run the program
     system("make -f Makefile_main");
     # #system("./a.out > tmp.txt");
@@ -80,12 +80,12 @@ for( $m = 0; $m < 3; $m = $m+1){
      $line =~ s/ , $/ /;
      $line =~ s/^ , / /;
      $line =  $line . "\n";
-     print $line; 
+     print $line;
     # }
      close( FILE );
      system("make -f Makefile_main clean");
 
 }
+rename("output.txt", "output" . $m . ".txt") || die ( "Error in renaming" );
 }
 exit
-
