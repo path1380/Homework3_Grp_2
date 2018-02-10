@@ -29,10 +29,6 @@ program main
   call domain(grdpts)
   call legendre_degrees(degree_vec)
 
-  !allocate our quad_qd arrays
-  ! ALLOCATE(approximation(num_grdpts-1))
-  ! ALLOCATE(interval_info(num_grdpts-1))
-
   !Compute coefficients and approximation on each interval
   do i = 1,num_grdpts-1
     lt_endpt = grdpts(i)
@@ -73,8 +69,6 @@ program main
 
   !Deallocate all used memory
   call delete_quad(num_grdpts-1, interval_info)
-  ! DEALLOCATE(interval_info)
   call delete_quad(num_grdpts-1, approximation)
-  ! DEALLOCATE(approximation)
 
 end program main

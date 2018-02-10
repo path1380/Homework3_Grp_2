@@ -22,6 +22,7 @@ program main
   real(dp) :: grdpts(num_grdpts), sample_nodes(num_nodes), function_vals(num_nodes)
   real(dp) :: lt_endpt, rt_endpt, stepsize
   real(dp), dimension(num_grdpts -1) :: unif_err, L2_err
+  real(dp), dimension((num_grdpts-1)*num_nodes) :: all_fcn_vals, all_approx_vals
   type(quad_1d), dimension(1:num_grdpts-1) :: interval_info, approximation
   integer :: i, j
 
@@ -57,11 +58,13 @@ program main
     !create array of function values at each sample node (for error calculations)
     function_vals = function_eval(num_nodes, sample_nodes)
 
-
     !evaluate at a new set of gridpoints
      approximation(i)%a(:,1) = approx_eval(lt_endpt,rt_endpt,num_nodes,sample_nodes,degree_vec(i),interval_info(i)%a(:,1))
      unif_err(i) = MAXVAL(ABS(approximation(i)%a(:,1) - function_vals))
      L2_err(i) = NORM2(approximation(i)%a(:,1) - function_vals)
+
+    ! Store function and approximation values
+    all_fcn_vals(i:i+(i-1)*num_nodes) = function_vals
   end do
 
   !print errors out to terminal
