@@ -17,7 +17,7 @@ program main
 
   implicit none
 
-  integer, parameter :: num_grdpts = 3, num_nodes = 15
+  integer, parameter :: num_grdpts = GGGG, num_nodes = NNNN
   integer :: degree_vec(num_grdpts - 1)
   real(dp) :: grdpts(num_grdpts), sample_nodes(num_nodes), function_vals(num_nodes)
   real(dp) :: lt_endpt, rt_endpt, stepsize
