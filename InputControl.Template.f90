@@ -21,16 +21,25 @@ contains
 
   subroutine legendre_degrees(degree_vec)
     integer, parameter :: num_intervals = IIII
+    integer :: j
     integer, intent(out) :: degree_vec(num_intervals)
-
-    degree_vec(1:num_intervals) = DDDD
+    do j=1,num_intervals
+      degree_vec(j) = DDDD
+    end do
   end subroutine legendre_degrees
 
   subroutine domain(grd_pts)
     integer, parameter :: num_grdpts = NNNN
-    real(dp), intent(out) :: grd_pts(num_grdpts)
+    integer :: j=1
+    real(dp) :: spacing
+    real(dp), dimension(1:2) :: endpts
+    real(dp), intent(out) :: grd_pts(1:num_grdpts)
 
-    grd_pts(1:num_grdpts) = PPPP
+    endpts(1:2) = PPPP
+    spacing = (endpts(2)-endpts(1))/(num_grdpts-1)
+    do j=1,num_grdpts
+      grd_pts(j)=((j-1)*spacing)+endpts(1)
+    end do
   end subroutine domain
 
   subroutine delete_quad(num_quads, quad_array)
