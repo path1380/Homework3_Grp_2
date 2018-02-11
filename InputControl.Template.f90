@@ -42,6 +42,20 @@ contains
     end do
   end subroutine domain
 
+  subroutine domain_equispaced(grd_pts)
+    integer, parameter :: num_grdpts = NNNN
+    real(dp), parameter :: lt_endpt = LLLL, rt_endpt = RRRR
+    real(dp), intent(out) :: grd_pts(num_grdpts)
+    integer :: i
+
+    grd_pts(1) = lt_endpt
+
+    do i=2,num_grdpts
+      grd_pts(i) = lt_endpt + (i-1)*(rt_endpt - lt_endpt)/(num_grdpts - 1)
+    end do
+
+  end subroutine domain_equispaced
+
   subroutine delete_quad(num_quads, quad_array)
     integer, intent(in) :: num_quads
     type(quad_1d) :: quad_array(num_quads)

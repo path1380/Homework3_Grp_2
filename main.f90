@@ -17,7 +17,11 @@ program main
 
   implicit none
 
+<<<<<<< HEAD
   integer, parameter :: num_grdpts = 11, num_nodes = 15
+=======
+  integer, parameter :: num_grdpts = 3, num_nodes = 20
+>>>>>>> 7039a4c868b7ddcc068c100afe509641f72ac338
   integer :: degree_vec(num_grdpts - 1)
   real(dp) :: grdpts(num_grdpts), sample_nodes(num_nodes), function_vals(num_nodes)
   real(dp) :: lt_endpt, rt_endpt, stepsize
@@ -26,7 +30,7 @@ program main
   integer :: i, j
 
   !Grab grid information from InputControl
-  call domain(grdpts)
+  call domain_equispaced(grdpts)
   call legendre_degrees(degree_vec)
 
   !Compute coefficients and approximation on each interval

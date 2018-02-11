@@ -1,5 +1,5 @@
 module quad_1dmod
-  !This the requested module.
+  !This the requested module. This module defines the datatype quad_1d as in the subtask statements
   use type_defs
   implicit none
 

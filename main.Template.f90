@@ -26,7 +26,7 @@ program main
   integer :: i, j
 
   !Grab grid information from InputControl
-  call domain(grdpts)
+  call domain_equispaced(grdpts)
   call legendre_degrees(degree_vec)
 
   !Compute coefficients and approximation on each interval
