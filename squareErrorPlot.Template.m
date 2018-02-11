@@ -1,7 +1,7 @@
 str = 'output_';
 tmp = num2str(TTTT); %use perl to overwrite string 
-colorVec = hsv(20);
-num_intervals = VVVV
+num_intervals = VVVV;
+colorVec = hsv(log2(num_intervals));
 
 %loop over each file to build plots
 for i = 1:log2(num_intervals)
@@ -18,7 +18,7 @@ set(gca,'fontsize',18);
 xlabel('Number of Intervals')
 ylabel('Log Error')
 title('$L_2$ Error','Interpreter','latex')
-ylim([eps,10])
+ylim([eps,100])
 %legend(legendInfo)
 
 print -depsc2 YYYY
