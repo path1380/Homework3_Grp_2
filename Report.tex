@@ -12,6 +12,7 @@
 \usepackage{cite}
 \usepackage{tabularx}
 \usepackage{listings}
+\usepackage{subcaption}
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\overbar}[1]{\mkern 1.5mu\overline{\mkern-1.5mu#1\mkern-1.5mu}\mkern 1.5mu}
 
@@ -69,33 +70,77 @@ We begin by considering a set of functions $f(x)$ and showing that with $q=1,2,\
   \begin{align*}
     f(x) = e^{\left( x - 2\right)^2}, \quad x\in \left[ 0,4\right].
   \end{align*}
-We note that this function is continuous and infinitely differentiable, and so we expect that our approximation scheme should increase in accuracy as we increase $q$ and the number of elements. Indeed, this appears to be the case as demonstrated by the following plot of data. Consistently it appears taht for a fixed number of elements an increase in $q$ decreases the error, and for fixed $q$ an increase in number of elements (i.e. smaller average element sizes) decreases the overall error as expected.
+We note that this function is continuous and infinitely differentiable, and so we expect that our approximation scheme should increase in accuracy as we increase $q$ and the number of elements. Indeed, this appears to be the case as demonstrated by the following plot of data. Consistently it appears that for a fixed number of elements an increase in $q$ decreases the error, and for fixed $q$ an increase in number of elements (i.e. smaller average element sizes) decreases the overall error as expected.
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=\textwidth]{maxError_0.png}
-  \caption{Uniform Norm Error of an Exponential}
-  \label{fig:maxErr0}
+  \begin{minipage}{.6\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{maxError_0.png}
+    \captionof{figure}{Max Error for an Exponential}
+    \label{fig:max0}
+  \end{minipage}%
+  \begin{minipage}{.6\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{squareError_0.png}
+    \captionof{figure}{$L_2$ Error for an Exponential}
+    \label{fig:max0}
+  \end{minipage}%
 \end{figure}
 
-\noindent The situation is much the same with respect to the $L_2$ error as depicted below. We see that the $L_2$ error doesn't reach machine precision and yields fewer digits of accuracy compared to the uniform error. 
+\noindent The situation is much the same with respect to the $L_2$ error as depicted above in the right panel. We see that the $L_2$ error doesn't reach machine precision and is slightly worse compared to the uniform error. \newline
+
+\noindent We move on to another infinitely differentiable function, this time to the periodic function
+
+  \begin{align*}
+    f(x) = \sin x , \quad x \in \left[ -\pi, \pi\right].
+  \end{align*}
+Below is a plot of the error.
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=\textwidth]{squareError_0.png}
-  \caption{Uniform Norm Error of an Exponential}
-  \label{fig:maxErr0}
+  \begin{minipage}{.6\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{maxError_2.png}
+    \captionof{figure}{Max Error for $\sin x$}
+    \label{fig:max0}
+  \end{minipage}%
+  \begin{minipage}{.6\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{squareError_2.png}
+    \captionof{figure}{$L_2$ Error for $\sin x$}
+    \label{fig:max0}
+  \end{minipage}%
 \end{figure}
 
 
+\noindent As before, the $L_\infty$ error for each $q$ is better than that of the $L_2$ error and decreases with increasing number of intervals used to build our approximation. One curiosity here is that it appears that choosing a slightly smaller $q$ and increasing the number of intervals outperforms large $q$ values past around $100$ intervals. \newline
 
+\noindent So far we have only considered smooth, differentiable functions. Let us now examine a case of a continuous function that is not continuously differentiable, 
 
+\begin{align*}
+  f(x) = | x | , \quad x \in [-2,2].
+\end{align*}
 
+\noindent We might expect that the error away from the non-differentiable point $x = 0$ to be incredibly low since away from $x = 0$ the function is linear and for $q \geq 2$ we expect to approximate the function exactly (since choosing a quadrature with $n$ nodes gives us accurate integration of polynomials of degree up to $2n - 3$ for Gauss-Lobato nodes). However, since $x = 0$ is in the region of interest, the error of approximating near the problem point will dominate the overall error in approximating the function globally. 
 
+\begin{figure}[H]
+  \centering
+  \begin{minipage}{.6\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{maxError_1.png}
+    \captionof{figure}{Max Error for $|x|$}
+    \label{fig:max0}
+  \end{minipage}%
+  \begin{minipage}{.6\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{squareError_1.png}
+    \captionof{figure}{$L_2$ Error for $|x|$}
+    \label{fig:max0}
+  \end{minipage}%
+\end{figure}
 
-
-
-
+\noindent The above error plot shows that, as before, increasing $q$ and number of intervals used does decrease the overall error (and the $L_\infty$ error is better than the $L_2$ error). In this case, however, we make few gains and don't achieve more than $5$ digits of accuracy. The given formulation then is problematic for functions that are non-differentiable, even for a function that is not differentiable at a single point.
 
 
 
