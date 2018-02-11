@@ -23,15 +23,29 @@ contains
     integer, parameter :: num_intervals = 2
     integer, intent(out) :: degree_vec(num_intervals)
 
-    degree_vec(1:num_intervals) = (/12, 12/)
+    degree_vec(1:num_intervals) = 4
   end subroutine legendre_degrees
 
   subroutine domain(grd_pts)
     integer, parameter :: num_grdpts = 3
     real(dp), intent(out) :: grd_pts(num_grdpts)
 
-    grd_pts(1:num_grdpts) = (/0.0_dp, 0.3_dp, 1.0_dp/)
+    grd_pts(1:num_grdpts) = 0.0_dp
   end subroutine domain
+
+  subroutine domain_equispaced(grd_pts)
+    integer, parameter :: num_grdpts = 3
+    real(dp), parameter :: lt_endpt = -3.1415926535897932_dp, rt_endpt = 3.1415926535897932_dp
+    real(dp), intent(out) :: grd_pts(num_grdpts)
+    integer :: i
+
+    grd_pts(1) = lt_endpt
+
+    do i=2,num_grdpts
+      grd_pts(i) = lt_endpt + (i-1)*(rt_endpt - lt_endpt)/(num_grdpts - 1)
+    end do
+
+  end subroutine domain_equispaced
 
   subroutine delete_quad(num_quads, quad_array)
     integer, intent(in) :: num_quads
