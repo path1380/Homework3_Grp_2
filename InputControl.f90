@@ -14,23 +14,32 @@ contains
     real(dp), intent(in) :: grd_pts(0:num_pts-1)
     real(dp) :: function_eval(0:num_pts-1)
 
-    !Here replace the string sin(grd_pts) with the desired function
+    !Here replace the string SIN(grd_pts) with the desired function
     !via a perl script
-    function_eval = sin(grd_pts)
+    function_eval = SIN(grd_pts)
   end function function_eval
 
   subroutine legendre_degrees(degree_vec)
-    integer, parameter :: num_intervals = 2
+    integer, parameter :: num_intervals = 10
+    integer :: j
     integer, intent(out) :: degree_vec(num_intervals)
-
-    degree_vec(1:num_intervals) = (/12, 12/)
+    do j=1,num_intervals
+      degree_vec(j) = 20
+    end do
   end subroutine legendre_degrees
 
   subroutine domain(grd_pts)
-    integer, parameter :: num_grdpts = 3
-    real(dp), intent(out) :: grd_pts(num_grdpts)
+    integer, parameter :: num_grdpts = 11
+    integer :: j=1
+    real(dp) :: spacing
+    real(dp), dimension(1:2) :: endpts
+    real(dp), intent(out) :: grd_pts(1:num_grdpts)
 
-    grd_pts(1:num_grdpts) = (/0.0_dp, 0.3_dp, 1.0_dp/)
+    endpts(1:2) = (/-4*ATAN(1.d0),4*ATAN(1.d0)/)
+    spacing = (endpts(2)-endpts(1))/(num_grdpts-1)
+    do j=1,num_grdpts
+      grd_pts(j)=((j-1)*spacing)+endpts(1)
+    end do
   end subroutine domain
 
   subroutine delete_quad(num_quads, quad_array)
