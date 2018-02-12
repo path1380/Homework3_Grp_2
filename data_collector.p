@@ -6,9 +6,9 @@
 #
 #
 # Here is the generic file
-$cmdFile="./InputControl.Template.f90";
+$cmdFile="./InputControl.Template2.f90";
 $outFile="./InputControl.f90";
-$cmdFile2="./main.Template.f90";
+$cmdFile2="./main.Template2.f90";
 $outFile2="./main.f90";
 $matFile="maxErrorPlot.Template.m";
 $outFile3="maxErrorPlot.m";
@@ -16,16 +16,17 @@ $matFile2="squareErrorPlot.Template.m";
 $outFile4="squareErrorPlot.m";
 
 $qmax = 20; #maximum legendre degree to use
-$nmax = 1024; #maximum number of intervals
+$nmax = 2048; #maximum number of intervals
 $sample_rate = 20; #number of samples taken in each interval after finding coefficients 
 $dynamic_grdpts = "0.0_dp";
 
 # Functions to test
-@array_f = ("exp( ((grd_pts-2.0_dp)**2.0_dp)/2.0_dp)", "(grd_pts-0.2_dp)**10", "sin(grd_pts)");
-@array_lt_endpts = ("0.0_dp","1.0_dp","-3.1415926535897932_dp");
-@array_rt_endpts = ("4.0_dp","5.0_dp","3.1415926535897932_dp");
+$num_funx = 4;
+@array_f = ("exp( ((grd_pts-2.0_dp)**2.0_dp))", "ABS(grd_pts)", "SIN(grd_pts)", "SIGN(1.0_dp,grd_pts)");
+@array_lt_endpts = ("0.0_dp","-3.0_dp","-3.1415926535897932_dp", "-2.0_dp");
+@array_rt_endpts = ("4.0_dp","2.0_dp","3.1415926535897932_dp", "2.0_dp");
 
-for( $m = 0; $m < 3; $m = $m+1){
+for( $m = 0; $m < $num_funx; $m = $m+1){
     #Increase the maximal Legendre degree each run
     for( $q = 1; $q <= $qmax; $q = $q+1){
         #increase the number of intervals by a power of 2 each run

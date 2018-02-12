@@ -26,12 +26,7 @@
 
 
 \begin{document}
-
-\maketitle
-
-\section{Increasing Element Count}
-
-\subsection{!Subsection 1!}
+%\def\code#1{\texttt{#1}}
 
 \maketitle
 
@@ -70,15 +65,13 @@ We note that both sides have $1/2 \left( x_i - x_{i-1}\right)$ so that our syste
   \end{align*}
 That is, the set of $N$ decoupled linear systems of equations of size $(q+1)\times(q+1)$ forms a diagonal matrix which can easily be solved without calling a routine that performs Gaussian elimination.
 
-\section{Increasing Element Count}
-We begin by considering a set of functions $f(x)$ and showing that with $q=1,2,\dots,$ the approximation described above is increasingly accurate with an increasing number of elements as measured in the uniform and $L_2$ norm. In the following plots, note that $q = 1$ is in red and increasing $q$ is colored according to the usual ordering of the color spectrum (i.e. ROYGBV applies).
-
-\subsection{Smooth, Infinitely Differentiable Function}
-Let us first consider the function
+\section{Results}
+We begin by considering a set of functions $f(x)$ and showing that with $q=1,2,\dots,$ the approximation described above is increasingly accurate with an increasing number of elements as measured in the uniform and $L_2$ norm. In the following plots, note that $q = 1$ is in red and increasing $q$ is colored according to the usual ordering of the color spectrum (i.e. ROYGBV applies). Let us first consider the function
   \begin{align*}
     f(x) = e^{\left( x - 2\right)^2}, \quad x\in \left[ 0,4\right].
   \end{align*}
 We note that this function is continuous and infinitely differentiable, and so we expect that our approximation scheme should increase in accuracy as we increase $q$ and the number of elements. Indeed, this appears to be the case as demonstrated by the following plot of data. Consistently it appears that for a fixed number of elements an increase in $q$ decreases the error, and for fixed $q$ an increase in number of elements (i.e. smaller average element sizes) decreases the overall error as expected.
+
 \begin{figure}[H]
   \centering
   \begin{minipage}{.6\textwidth}
@@ -91,14 +84,12 @@ We note that this function is continuous and infinitely differentiable, and so w
     \centering
     \includegraphics[width=\linewidth]{squareError_0.png}
     \captionof{figure}{$L_2$ Error for an Exponential}
-    \label{fig:square0}
+    \label{fig:max0}
   \end{minipage}%
 \end{figure}
 
 \noindent The situation is much the same with respect to the $L_2$ error as depicted above in the right panel. We see that the $L_2$ error doesn't reach machine precision and is slightly worse compared to the uniform error. \newline
 
-
-\subsection{Smooth, Infinitely Differentiable, Periodic Function}
 \noindent We move on to another infinitely differentiable function, this time to the periodic function
 
   \begin{align*}
@@ -112,20 +103,19 @@ Below is a plot of the error.
     \centering
     \includegraphics[width=\linewidth]{maxError_2.png}
     \captionof{figure}{Max Error for $\sin x$}
-    \label{fig:max2}
+    \label{fig:max0}
   \end{minipage}%
   \begin{minipage}{.6\textwidth}
     \centering
     \includegraphics[width=\linewidth]{squareError_2.png}
     \captionof{figure}{$L_2$ Error for $\sin x$}
-    \label{fig:square2}
+    \label{fig:max0}
   \end{minipage}%
 \end{figure}
 
 
 \noindent As before, the $L_\infty$ error for each $q$ is better than that of the $L_2$ error and decreases with increasing number of intervals used to build our approximation. One curiosity here is that it appears that choosing a slightly smaller $q$ and increasing the number of intervals outperforms large $q$ values past around $100$ intervals. \newline
 
-\subsection{Continuous, Non-Differentiable Function}
 \noindent So far we have only considered smooth, differentiable functions. Let us now examine a case of a continuous function that is not continuously differentiable, 
 
 \begin{align*}
@@ -140,44 +130,18 @@ Below is a plot of the error.
     \centering
     \includegraphics[width=\linewidth]{maxError_1.png}
     \captionof{figure}{Max Error for $|x|$}
-    \label{fig:max1}
+    \label{fig:max0}
   \end{minipage}%
   \begin{minipage}{.6\textwidth}
     \centering
     \includegraphics[width=\linewidth]{squareError_1.png}
     \captionof{figure}{$L_2$ Error for $|x|$}
-    \label{fig:square1}
+    \label{fig:max0}
   \end{minipage}%
 \end{figure}
 
 \noindent The above error plot shows that, as before, increasing $q$ and number of intervals used does decrease the overall error (and the $L_\infty$ error is better than the $L_2$ error). In this case, however, we make few gains and don't achieve more than $5$ digits of accuracy. The given formulation then is problematic for functions that are non-differentiable, even for a function that is not differentiable at a single point.
 
-\section{Increasing Polynomial Degree}
 
-\section{Exploring Curiosities}
 
-Let us consider the following function
-\begin{align*}
-	f(x) = \left\{ \begin{array}{cc} 
-                1 & \hspace{5mm} x \ge 0 \\
-                -1 & \hspace{5mm} x < 0 
-                \end{array} \right.
-\end{align*}
-We note that this function is not differentiable in the usual sense, nor is it even continuous. We then expect the prescribed approximation method to break down due to the jump discontinuity. 
-\begin{figure}[H]
-  \centering
-  \begin{minipage}{.6\textwidth}
-    \centering
-    \includegraphics[width=\linewidth]{maxError_3.png}
-    \captionof{figure}{Max Error for $Sgn(x)$}
-    \label{fig:max3}
-  \end{minipage}%
-  \begin{minipage}{.6\textwidth}
-    \centering
-    \includegraphics[width=\linewidth]{squareError_3.png}
-    \captionof{figure}{$L_2$ Error for $Sgn(x)$}
-    \label{fig:square3}
-  \end{minipage}%
-\end{figure}
-\noindent Interestingly, the error does not decrease with increasing number of intervals used in our approximation. This suggests that the jump discontinuity cannot be well approximated by our method. As before, increasing $q$ in general does decrease the overall error, but no more than a single digit of accuracy is attained for $q \leq 20$. 
 \end{document}
