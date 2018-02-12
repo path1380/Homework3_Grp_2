@@ -14,24 +14,38 @@ contains
     real(dp), intent(in) :: grd_pts(0:num_pts-1)
     real(dp) :: function_eval(0:num_pts-1)
 
-    !Here replace the string sin(grd_pts) with the desired function
+    !Here replace the string FFFF with the desired function
     !via a perl script
-    function_eval = sin(grd_pts)
+    function_eval = FFFF
   end function function_eval
 
   subroutine legendre_degrees(degree_vec)
-    integer, parameter :: num_intervals = 2
+    integer, parameter :: num_intervals = IIII
     integer, intent(out) :: degree_vec(num_intervals)
 
-    degree_vec(1:num_intervals) = (/12, 12/)
+    degree_vec(1:num_intervals) = DDDD
   end subroutine legendre_degrees
 
   subroutine domain(grd_pts)
-    integer, parameter :: num_grdpts = 3
+    integer, parameter :: num_grdpts = NNNN
     real(dp), intent(out) :: grd_pts(num_grdpts)
 
-    grd_pts(1:num_grdpts) = (/0.0_dp, 0.3_dp, 1.0_dp/)
+    grd_pts(1:num_grdpts) = PPPP
   end subroutine domain
+
+  subroutine domain_equispaced(grd_pts)
+    integer, parameter :: num_grdpts = NNNN
+    real(dp), parameter :: lt_endpt = LLLL, rt_endpt = RRRR
+    real(dp), intent(out) :: grd_pts(num_grdpts)
+    integer :: i
+
+    grd_pts(1) = lt_endpt
+
+    do i=2,num_grdpts
+      grd_pts(i) = lt_endpt + (i-1)*(rt_endpt - lt_endpt)/(num_grdpts - 1)
+    end do
+
+  end subroutine domain_equispaced
 
   subroutine delete_quad(num_quads, quad_array)
     integer, intent(in) :: num_quads

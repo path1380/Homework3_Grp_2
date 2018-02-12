@@ -21,12 +21,7 @@ program main
   integer :: degree_vec(num_grdpts - 1)
   real(dp) :: grdpts(num_grdpts), sample_nodes(num_nodes), function_vals(num_nodes)
   real(dp) :: lt_endpt, rt_endpt, stepsize
-<<<<<<< HEAD
-  real(dp), dimension(num_grdpts -1) :: unif_err, L2_err,log_err
-=======
   real(dp), dimension(num_grdpts -1) :: unif_err, L2_err
-  ! real(dp), dimension(1:(num_grdpts-1)*num_nodes) :: all_fcn_vals, all_aprx_vals
->>>>>>> 7d9a3e0484097fec19f599c8c65e63a375b3b5e6
   type(quad_1d), dimension(1:num_grdpts-1) :: interval_info, approximation
   integer :: i, j
 
@@ -62,33 +57,15 @@ program main
     !create array of function values at each sample node (for error calculations)
     function_vals = function_eval(num_nodes, sample_nodes)
 
+
     !evaluate at a new set of gridpoints
      approximation(i)%a(:,1) = approx_eval(lt_endpt,rt_endpt,num_nodes,sample_nodes,degree_vec(i),interval_info(i)%a(:,1))
      unif_err(i) = MAXVAL(ABS(approximation(i)%a(:,1) - function_vals))
      L2_err(i) = NORM2(approximation(i)%a(:,1) - function_vals)
-<<<<<<< HEAD
-     log_err(i) = LOG(L2_err(i))
   end do
 
   !print errors out to terminal
-  write(*,'(2(E24.16))') maxval(LOG(dble(degree_vec))), maxval(log_err)
-=======
-
-    ! Store function and approximation values
-    ! do j=1,num_nodes
-    !     all_fcn_vals((i-1)*num_nodes+j) = function_vals(j)
-    !     all_aprx_vals((i-1)*num_nodes+j) = approximation(i)%a(j-1,1)
-    ! end do
-  end do
-
-  !print function values and errors out to terminal
-  ! write(*, '(E24.16)') all_fcn_vals
-  ! write(*,*)      ! newline
-  ! write(*, '(E24.16)') all_aprx_vals
-  ! write(*,*)      ! newline
-  ! write(*,*) "ERRORS"
   write(*,'(2(E24.16))') maxval(unif_err), maxval(L2_err)
->>>>>>> 7d9a3e0484097fec19f599c8c65e63a375b3b5e6
 
   !Deallocate all used memory
   call delete_quad(num_grdpts-1, interval_info)
