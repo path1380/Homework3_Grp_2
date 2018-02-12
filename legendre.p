@@ -18,6 +18,11 @@ $outFile2="./main.f90";
 @array_num_intervals = ("2", "4", "2");
 @array_degrees = ("(/12, 12/)", "(/12,12,12,12/)", "(/12, 12/)");
 @array_grdpts = ("(/0.0_dp, 0.3_dp, 1.0_dp/)", "(/0.0_dp, 0.3_dp, 1.0_dp, 2.0_dp, 2.2_dp/)", "(/0.0_dp, 0.3_dp, 1.0_dp/)");
+$custom_grd_bool = 1;      # Boolean; 1 = use custom grid points, 0 = don't
+@array_eqi_bnds = (["0.0", "1.0"], ["2.0", "3.0"], ["4.0", "5.0"]);
+$eqi_grd_bool = 0;   # 1 = use eqidist grid points if custom points aren't used
+$noisy_eqi_grid_bool = 0;  # 1 = add noise to equidist grid points
+$noise_range = 0.05;       # Noise will be at most $noise_range * interval
 @array_num_subsamples = ("15", "15", "15");
 
 for( $m = 0; $m < 3; $m = $m+1){
@@ -35,7 +40,33 @@ for( $m = 0; $m < 3; $m = $m+1){
     $line =~ s/\bIIII\b/$array_num_intervals[$m]/;
     $line =~ s/\bDDDD\b/$array_degrees[$m]/;
     $line =~ s/\bNNNN\b/$array_num_grdpts[$m]/;
+    if ($custom_grd_bool) {
     $line =~ s/\bPPPP\b/$array_grdpts[$m]/;
+    } elsif ($eqi_grd_bool) {
+        # Array characteristics
+        $lower_bnd = $array_eqi_bnds[$m][0];
+        $upper_bnd = $array_eqi_bnds[$m][1];
+        $num_grdpts = $array_num_grdpts[$m];
+        $step_size = ($upper_bnd - $lower_bnd)/($num_grdpts-1);
+
+        # Create array of equispaced grid points with fortran formatting
+        @array_eqi_grdpts = ($lower_bnd . "_dp");
+        for ($j=1; $j<$num_grdpts-1; $j=$j+1) {
+            if ($noisy_eqi_grid_bool){
+                $noise = rand() * $noise_range;
+                push @array_eqi_grdpts, $lower_bnd + $j*$step_size+$noise . "_dp";
+            } else {
+            push @array_eqi_grdpts, $lower_bnd + $j*$step_size . "_dp";
+            }
+        }
+        push @array_eqi_grdpts, $upper_bnd . "_dp";
+
+        # Flatten array into a string in fortran format
+        $str_eqi_grdpts = "(/" . join(", ", @array_eqi_grdpts) . "/)";
+
+        $line =~ s/\bPPPP\b/$str_eqi_grdpts/;
+    }
+
 
     print OUTFILE $line;
         # You can always print to secreen to see what is happening.
