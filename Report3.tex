@@ -59,7 +59,7 @@ On the right hand side of our formulation, we approximate this using the Gauss-L
   \begin{align*}
     \int_{\Omega_i} P_l(r) f(x) \, dx = \frac{1}{2} \left( x_i - x_{i-1}\right) \int_{-1}^1 P_l(r) f(x(r)) \, dr \approx \frac{1}{2} \left( x_i - x_{i-1}\right)\sum_{j=0}^q w_j P_l(r_j) f(x(r_j)).
   \end{align*}
-We note that both sides have $1/2 \left( x_i - x_{i-1}\right)$ so that our system of equations reduces to 
+We note that both sides have $\frac{1}{2} \left( x_i - x_{i-1}\right)$ so that our system of equations reduces to 
 
   \begin{align*}
     c(l,i) \frac{2}{2l + 1} = \sum_{j=0}^q w_j P_l(r_j) f(x(r_j)) \implies c(l,i) = \frac{2l + 1}{2} \sum_{j=0}^q w_j P_l(r_j) f(x(r_j)), \quad l = 0,\dots, q .
@@ -149,10 +149,14 @@ Below is a plot of the error.
 \noindent The above error plot shows that, as before, increasing $q$ and number of intervals used does decrease the overall error (and the $L_\infty$ error is better than the $L_2$ error). In this case, however, we make few gains and don't achieve more than $5$ digits of accuracy. The given formulation then is problematic for functions that are non-differentiable, even for a function that is not differentiable at a single point.
 
 \section{Increasing Polynomial Degree}
-The relationship between error and an increase in Legendre polynomial degree was explored. The function $sin(x)$ was chosen for the case study. In order to investigate whether the error followed a trend like $c^{-q}$, we plotted log$\big[max(||E||_{2})\big]$ vs log(q) where E is the error and q is the highest degree of polynomials. This was done for total number of intervals = 5,6,7,8,9 and 10.
-\includegraphics[scale=0.5]{hw3.png}
-
-We can see that we almost get a straight line with negative slope (starting with q=4) upto a certain value of q on the log-log plot. This means that the error does obey the law $E=c^{-q}$. After a certain value, the error is nearly constant, i.e. the value of log$\big[max(||E||_{2})\big]$ goes down to -35. This is because the error E=exp(-35) is of the order of $10^{-16}$, which is machine precision, i.e. it is beyond measure by our computers which work on double precision.
+The relationship between error and an increase in Legendre polynomial degree was explored. The function $\sin(x)$ was chosen for this case study. In order to investigate whether the error followed a trend like $c^{-q}$, we plotted $\log\big[max(||E||_{2})\big]$ vs $\log(q)$ where E is the error and q is the highest degree of polynomials. This was done for total number of intervals = $5,6,7,8,9$ and $10$.
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.5]{hw3.png}
+  \caption{Plot of Increasing Legendre degree $q$ for Fixed Number of Intervals}
+  \label{fig:incDegree}
+\end{figure}
+\noindent We can see that we almost get a straight line with negative slope (starting with q=4) up to a certain value of $q$ on the log-log plot. This means that the error does obey the law $E=c^{-q}$. After a certain value, the error is nearly constant, i.e. the value of log$\big[max(||E||_{2})\big]$ goes down to $-35$. This is because the error $E=e^{-35}$ is of the order of $10^{-16}$, which is machine precision, i.e. it is beyond measure by our computers which work on double precision.
 
 \section{Exploring Curiosities}
 \subsection{Discontinuous, Non-Differentiable Function}
@@ -182,27 +186,25 @@ We note that this function is not differentiable in the usual sense, nor is it e
 \noindent Interestingly, the error does not decrease with increasing number of intervals used in our approximation. This suggests that the jump discontinuity cannot be well approximated by our method. As before, increasing $q$ in general does decrease the overall error, but no more than a single digit of accuracy is attained for $q \leq 20$. 
 
 \subsection{Using Chebyshev Polynomials / Monomials as Basis Functions}
-Let a function f(x) be approximated by using Chebyshev polynomials upto degree q as basis functions. Let the grid comprise of intervals $\Omega_{i}$. So the function would have a representation
-\begin{equation}
-    f(x) = \sum_{k=0}^{q} c(k,i) T_{k}(r_{i}(x)) \hspace{1in} x \in \Omega_{i}
-\end{equation}
+Let a function $f(x)$ be approximated by using Chebyshev polynomials up to degree $q$. Let the grid comprise of intervals $\Omega_{i}$. The function $f(x)$ would have a representation
+\begin{align*}
+    f(x) = \sum_{k=0}^{q} c(k,i) T_{k}(r_{i}(x)), \quad x \in \Omega_{i},
+\end{align*}
 where $r_{i}(x)$ be the linear mapping from $x \in \Omega_{i}$ to $r_{i} \in [-1,1]$. Thus, we would have
-\begin{equation}
-    \int_{\Omega_{i}} \frac{f(x) T_{l}(r_{i}(x)}{\sqrt{1 - (r_{i}(x))^{2}}} dx = \int_{\Omega_{i}} \sum_{k=0}^{q} c(k,i) \frac{T_{k}(r_{i}(x)) T_{l}(r_{i}(x))}{\sqrt{1 - (r_{i}(x))^{2}}} dx = c(l,i)
-\end{equation}
-Not only is the Chebyshev polynomial approximation objectively the best polynomial approximation technique for function approximation ($||Error|| < \frac{1}{2^{q-1}}$) but computing the coefficients is also pretty straightforward. So, this would be a pretty convenient way for approximating the function.\\
+\begin{align*}
+    \int_{\Omega_{i}} \frac{f(x) T_{l}(r_{i}(x)}{\sqrt{1 - (r_{i}(x))^{2}}} dx = \int_{\Omega_{i}} \sum_{k=0}^{q} c(k,i) \frac{T_{k}(r_{i}(x)) T_{l}(r_{i}(x))}{\sqrt{1 - (r_{i}(x))^{2}}} dx = c(l,i).
+\end{align*}
+The utility in using Chebyshev polynomials approximation is that the Chebyshev polynomails give the best approximation to a continuous function under the maximum norm. In addition, the roots of the Chebyshev polynomials have an explicit formula so that building quadratures with the Chebyshev polynomials would be efficient. \newline
 
-If we have a set of monomial basis functions, i.e. \{$1, x, x^{2}, \cdots x^{q}$\} then the function would be represented as 
-\begin{equation}
-    f(x) =  \sum_{k=0}^{q} c(k,i) x^{k} \hspace{1in} x \in \Omega_{i}
-\end{equation}
-We need to evaluate the function at q+1 points in each interval and solve a VanderMonde system of equations in each interval. Generally, this system is pretty ill-conditioned. We may have to switch over to Newton basis and use the divided difference formulae to calculate the interpolating polynomials using the points of function evaluation as interpolating points.\\
+\noindent If we use the monomial basis functions, i.e. \{$1, x, x^{2}, \cdots x^{q}$\} then the function $f(x)$ would be represented as 
+\begin{align*}
+    f(x) =  \sum_{k=0}^{q} c(k,i) x^{k}, \quad x \in \Omega_{i}.
+\end{align*}
+In general, this will yield a dense Vandermonde matrix which will require the use of a solver (i.e. \verb|LAPACK|) to find the coefficients. On the interval $[0,1]$, this creates the Hilbert matrix which is ill-conditioned and singular to working precision for small maximum degree $q$. \newline
 
-These are sample algorithms if we change the choice of basis functions.
+\subsection{Perturbing Uniform Grid Spacing}
 
-\subsection{Purturbing Uniform Grid Spacing}
-
-The effect of grid spacing on approximation error was explored. The function $sin(x)$ was approximated on the interval $[0,3]$. A grid with uniform spacing was intially created. Then it was purturbed with noise sampled from a uniform distribution. The magnitude of the noise was varied between 0\% and 30\% of the length of the domain. Error was observed to increase as purturbation magnitude increased. 
+The effect of grid spacing on approximation error was explored. The function $\sin(x)$ was approximated on the interval $[0,3]$. A grid with uniform spacing was intially created. Then it was purturbed with noise sampled from a uniform distribution. The magnitude of the noise was varied between $0\%$ and $30\%$ of the length of the domain. Error was observed to increase as purturbation magnitude increased. 
 
 \begin{figure}[H]
   \centering
